@@ -11,7 +11,7 @@ http
       }
       else {
         res.writeHead(404);
-        res.write('404 Not Found');
+        res.write('Error 404 \n Not Found');
         res.end();
       }
     }
@@ -22,5 +22,5 @@ http
     }
   })
   .listen((process.env.PING_LISTEN_PORT = "3000"), function() {
-    console.log("server start at port " + process.env.PING_LISTEN_PORT);
+    console.log("Server start at port " + process.env.PING_LISTEN_PORT);
   });
