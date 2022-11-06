@@ -1,5 +1,6 @@
 FROM node:latest
-RUN npm i && npx tsc
+RUN npm i && npx tsc && useradd -ms /bin/bash testuser
 WORKDIR /app
 COPY . /app
+USER testuser
 CMD node build/index.js
