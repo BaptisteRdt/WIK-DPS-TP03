@@ -29,3 +29,7 @@ Pour se faire il suffit de lancer la commande trivy image nom_image:nom_tag, ici
 ### Création d'une image multi-stage 
 
 
+## Problème d'utilisation de docker
+Malheureusement je n'ai pas pu tester ces commandes, mon docker ne fonctionne pas correctement. C'est pourquoi j'ai travaillé avec Samuel pour qui docker ne s'installe même pas. Nous avons réalisé ce travail à l'aide du cours et de la documentation Internet (StackOverFlow pour la plupart du débuggage qui n'a pas réussi à faire marcher docker).
+Ces commandes n'ont pas été testé nous aimerions pouvoir voir avec cela avec vous lors du prochain cours. 
+
