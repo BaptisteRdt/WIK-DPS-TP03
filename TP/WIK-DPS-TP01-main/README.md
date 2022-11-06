@@ -9,8 +9,8 @@ Pour créer une image il suffit de remplir un fichier dockerfile.yaml où l'on y
 L'image permettra de créer un conteneur par la suite.
 
 ### Création d'une image 
-Positionnez-vous dans le répertoire de travail souhaité puis créez un fichier dénommé dockerfile avec l'extension yaml. Dans ce fichier on va inscrire les différentes commandes qui devront s'éxécuter pour le lancement du processus.  
-Dans notre cas nous allons partir de **node** avec la commande *FROM* car c'est un projet typescript. 
-Ensuite il faut préciser le répertoire de travail avec la commande *WORKDIR* où l'on inscrira **/app**.
-Puis on lance plusieurs commandes nécessaires aux démarrages de notre application : *RUN* **npm i && npx tsc && useradd -ms /bin/bash testuser** (npm i : installe les packages nodes, npx tsc : lance le fichier tsconfig.json, useradd -ms /bin/bash testuser : spécifie qu'on utilisera un compte utilisateur)
+Positionnez-vous dans le répertoire de travail souhaité puis créez un fichier dénommé dockerfile avec l'extension yaml. Dans ce fichier on va inscrire les différentes commandes qui devront s'éxécuter pour le lancement du processus.    
+Dans notre cas nous allons partir de **node** avec la commande *FROM* car c'est un projet typescript.   
+Ensuite il faut préciser le répertoire de travail avec la commande *WORKDIR* où l'on inscrira **/app**.  
+Puis on lance plusieurs commandes nécessaires aux démarrages de notre application : *RUN* **npm i && npx tsc && useradd -ms /bin/bash testuser** (npm i : installe les packages nodes, npx tsc : lance le fichier tsconfig.json, useradd -ms /bin/bash testuser : spécifie qu'on utilisera un compte utilisateur)  
 *CMD* est la commande qui à utiliser en dernier, elle lance le fichier **node build/index.js**
