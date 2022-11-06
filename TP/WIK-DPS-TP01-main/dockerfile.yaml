@@ -1,0 +1,5 @@
+FROM node:latest
+RUN npm i && npx tsc
+WORKDIR /app
+COPY . /app
+CMD node build/index.js
