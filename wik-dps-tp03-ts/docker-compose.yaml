@@ -8,8 +8,8 @@ services:
       context: ./app
       dockerfile: multi-stage.dockerfile
 
-    # deploy:
-    #   replicas: 4
+    deploy:
+      replicas: 4
 
   # reverse-proxy:
   #   image: nginx
