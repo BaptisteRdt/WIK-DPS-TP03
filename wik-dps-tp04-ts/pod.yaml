@@ -1,53 +1,96 @@
+# # POD -> Bulle groupant plusieurs conteneur (pouvant contenir)
 # apiVersion: v1
 # kind: Pod
 # metadata:
-#   name: nginx
+#   name: pod-simple
 # spec:
 #   containers:
-#   - name: nginx
-#     image: nginx:1.14.2
+#   - name: api
+#     image: registry.cluster.wik.cloud/public/echo
 #     ports:
-#     - containerPort: 80
-#   - name: db
-#     image: bitnami/mariadb
-#     ports:
-#     - containerPort: 3306
+#     - containerPort: 8080
+
+# # REPLICA SET -> Créé plusieurs replica du service
+# apiVersion: apps/v1
+# kind: ReplicaSet
+# metadata:
+#   name: pod-replicated
+#   labels:
+#     ticket: replica-api
+# spec:
+#   # modify replicas according to your case
+#   replicas: 4
+#   selector:
+#     matchLabels:
+#       ticket: replica-api
+#   template:
+#     metadata:
+#       labels:
+#         ticket: replica-api
+#     spec:
+#       containers:
+#       - name: api
+#         image: registry.cluster.wik.cloud/public/echo
+#         ports:
+#         - containerPort: 8080
 
 # ---
 
-apiVersion: apps/v1
-kind: ReplicaSet
-metadata:
-  name: frontend
-  labels:
-    tier: frontend
-spec:
-  # modify replicas according to your case
-  replicas: 3
-  selector:
-    matchLabels:
-      tier: frontend
-  template:
-    metadata:
-      labels:
-        tier: frontend
-    spec:
-      containers:
-      - name: nginx
-        image: nginx:1.14.2
-        ports:
-        - containerPort: 80
-
----
-
+# SERVICE -> LoadBalancing
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx
+  name: service-api
 spec:
   selector:
-    tier: frontend
+    ticket: deployment-api
   ports:
     - protocol: TCP
-      port: 80
-      targetPort: 80
+      port: 8080
+      targetPort: 8080
+
+--- 
+
+# DEPLOYMENT -> Maintenance de service malgré MAJ
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pod-deployment
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+     ticket: deployment-api
+  strategy: 
+    type: RollingUpdate
+    rollingUpdate: 
+      maxUnavailable: 50%
+  template:
+    metadata:
+      labels:
+        ticket: deployment-api
+    spec:
+      containers:
+      - name: api
+        image: registry.cluster.wik.cloud/public/echo
+        ports:
+        - containerPort: 8080
+        
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: echo-ingress
+spec:
+  rules:
+  - host: on.sen.fou.du.nom.hein
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: service-api
+            port:
+              number: 8080
